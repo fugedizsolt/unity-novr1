@@ -1,0 +1,8 @@
+﻿20210101:
+	- a forgatásokat már sikerült eltolni a hmd-be, azaz, ha külön-külön x,y,z tengely körül forgatok (azaz csak az egyik forgatási szög változik), akkor szép a forgatás
+	- DE ha z tengelyen el vagyok fordulva kb 10-80 fokos szögben bárhol, és elkezdek forogni az x tengely körül, akkor elmászik a kocka...
+		- DE ha teljes fordulatot végzek, akkor visszamászik! azaz valami gimbal-lock féle hiba lehet a forgatásoknál
+	- ezt talán úgy tudom kisimítani, hogy külön számolom a nem-hmd-ben jól működő forgást és a hdm akkori pozíciójához igazítom a forgást
+	- hihetetlen, de készen van úgy tűnik
+		- a gimbal-lock hatás még megvan, de talán nem annyira zavaró
+	- a local-space <-> world-space konverzió volt a kulcs, de ezt még rohadtul nem értem...
