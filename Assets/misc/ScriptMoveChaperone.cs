@@ -17,7 +17,8 @@ public class ScriptMoveChaperone : MonoBehaviour
     {
         //this.posLeftHandRelativeToChaperoneAtStart = MyInverseTransformPoint( this.transform,this.gameObjLeftHand.transform.position );
         this.posLeftHandRelativeToChaperoneAtStart = this.gameObjLeftHand.transform.localPosition;
-        this.quatLeftHandRelativeToChaperoneAtStart =  Quaternion.Inverse( this.transform.rotation ) * this.gameObjLeftHand.transform.rotation;
+        //this.quatLeftHandRelativeToChaperoneAtStart =  Quaternion.Inverse( this.transform.rotation ) * this.gameObjLeftHand.transform.rotation;
+        this.quatLeftHandRelativeToChaperoneAtStart = this.gameObjLeftHand.transform.localRotation;
     }
 
     // Update is called once per frame
@@ -34,17 +35,17 @@ public class ScriptMoveChaperone : MonoBehaviour
         // először kiszámolom a chaperone-hoz relatív position-t és rotation-t
         //Vector3 currentRelativePosDiffLeftHandChaperone = MyInverseTransformPoint( this.transform,this.gameObjLeftHand.transform.position );
         Vector3 currentRelativePosDiffLeftHandChaperone = this.gameObjLeftHand.transform.localPosition;
-        Quaternion currentRelativeQuatDiffLeftHandChaperone = Quaternion.Inverse( this.transform.rotation ) * this.gameObjLeftHand.transform.rotation;
+        //Quaternion currentRelativeQuatDiffLeftHandChaperone = Quaternion.Inverse( this.transform.rotation ) * this.gameObjLeftHand.transform.rotation;
+        //Quaternion currentRelativeQuatDiffLeftHandChaperone = this.gameObjLeftHand.transform.localRotation;
 
         // először kiszámolom a chaperone-hoz viszonyított rotációt
-        //Quaternion quatTmp1 = Quaternion.Inverse( this.quatLeftHandRelativeToChaperoneAtStart ) * currentRelativeQuatDiffLeftHandChaperone;
+        //Quaternion quatTmp1 = Quaternion.Inverse( currentRelativeQuatDiffLeftHandChaperone ) * this.quatLeftHandRelativeToChaperoneAtStart;
         Quaternion quatTmp1 = this.gameObjLeftHand.transform.localRotation;
         // majd ehhez képest a deltaTime rotiációt
         Quaternion quatTmp2 = Quaternion.Lerp( Quaternion.identity,quatTmp1,deltaTime );
 
         // ezután meg kell határozni azt a chaperone eltolást(transzlációt), amely a hmd-ben történő rotáció miatt éri a chaperone-t
-        //Vector3 diffHmdChaperone = MyInverseTransformPoint( this.transform,this.gameObjHmd.transform.position );
-        //Vector3 diffHmdChaperone = this.gameObjHmd.transform.localPosition;
+        // itt érdekes módon worldCoord-ot kell használni, a local rotációval számolva, különben elmászik...
         Vector3 diffHmdChaperone = this.transform.position - this.gameObjHmd.transform.position;
         Vector3 diffRotHmdChaperone = quatTmp2 * diffHmdChaperone - diffHmdChaperone;
 
@@ -55,7 +56,7 @@ public class ScriptMoveChaperone : MonoBehaviour
 
         // végül módosítom a chaperone rotációját, és pozícióját
         this.transform.rotation *= quatTmp2;
-        this.transform.position += diffRotHmdChaperone;
+        //this.transform.position += diffRotHmdChaperone;
 
         Vector3 vecAdd = this.transform.rotation * diffLeftHandChaperoneLerp;
         this.transform.position += vecAdd;
@@ -63,9 +64,9 @@ public class ScriptMoveChaperone : MonoBehaviour
 
     private Vector3 MyInverseTransformPoint( Transform transform,Vector3 worldCoordPos )
     {
-        return transform.InverseTransformVector( worldCoordPos );
-        //Vector3 diff = ( worldCoordPos - transform.position );
-        //return Quaternion.Inverse( transform.rotation ) * diff;
+        //return transform.InverseTransformVector( worldCoordPos );
+        Vector3 diff = ( worldCoordPos - transform.position );
+        return Quaternion.Inverse( transform.rotation ) * diff;
     }
 
 	private void updateHUDPosInfo()
