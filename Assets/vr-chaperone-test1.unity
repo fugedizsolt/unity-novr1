@@ -570,6 +570,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldPos: {x: 0, y: 0, z: 0}
+  localPos: {x: 0, y: 0, z: 0}
+  localRotEuler: {x: 0, y: 0, z: 0}
+  invParent000: {x: 0, y: 0, z: 0}
+  worldRotation: {x: 0, y: 0, z: 0, w: 0}
+  localRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &892138756
 GameObject:
   m_ObjectHideFlags: 0
@@ -985,6 +990,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1626423002}
   - component: {fileID: 1626423003}
+  - component: {fileID: 1626423004}
   m_Layer: 0
   m_Name: sim-chaperone
   m_TagString: Untagged
@@ -1024,6 +1030,22 @@ MonoBehaviour:
   gameObjLeftHand: {fileID: 808764795}
   gameObjHmd: {fileID: 619154593}
   gameObjHUD: {fileID: 892138758}
+--- !u!114 &1626423004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626423001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1c8317e31d381449b7a976cf06cc0f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameObjLeftHand: {fileID: 808764795}
+  gameObjHmd: {fileID: 619154593}
+  localPosHmd: {x: 0, y: 0, z: 0}
+  localPosHand: {x: 0, y: 0, z: 0}
 --- !u!1 &1642246478
 GameObject:
   m_ObjectHideFlags: 0
