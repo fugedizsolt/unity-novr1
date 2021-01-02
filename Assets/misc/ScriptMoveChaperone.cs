@@ -11,6 +11,7 @@ public class ScriptMoveChaperone : MonoBehaviour
 
     private Vector3 posLeftHandRelativeToChaperoneAtStart;
     private Quaternion quatLeftHandRelativeToChaperoneAtStart;
+    private Vector3 savedHdmWorldPos;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +35,6 @@ public class ScriptMoveChaperone : MonoBehaviour
 
         // először kiszámolom a chaperone-hoz relatív position-t és rotation-t
         //Vector3 currentRelativePosDiffLeftHandChaperone = MyInverseTransformPoint( this.transform,this.gameObjLeftHand.transform.position );
-        Vector3 currentRelativePosDiffLeftHandChaperone = this.gameObjLeftHand.transform.localPosition;
         //Quaternion currentRelativeQuatDiffLeftHandChaperone = Quaternion.Inverse( this.transform.rotation ) * this.gameObjLeftHand.transform.rotation;
         //Quaternion currentRelativeQuatDiffLeftHandChaperone = this.gameObjLeftHand.transform.localRotation;
 
@@ -46,17 +46,24 @@ public class ScriptMoveChaperone : MonoBehaviour
 
         // ezután meg kell határozni azt a chaperone eltolást(transzlációt), amely a hmd-ben történő rotáció miatt éri a chaperone-t
         // itt érdekes módon worldCoord-ot kell használni, a local rotációval számolva, különben elmászik...
-        Vector3 diffHmdChaperone = this.transform.position - this.gameObjHmd.transform.position;
-        Vector3 diffRotHmdChaperone = quatTmp2 * diffHmdChaperone - diffHmdChaperone;
+        //Vector3 diffHmdChaperone = this.transform.position - this.gameObjHmd.transform.position;
+        //Vector3 diffRotHmdChaperone = quatTmp2 * diffHmdChaperone - diffHmdChaperone;
 
-        // transzláció kezelés
-        // először kiszámolom a chaperone-hoz viszonyított transzlációt, minusz a default érték
-        Vector3 diffLeftHandChaperone = currentRelativePosDiffLeftHandChaperone - this.posLeftHandRelativeToChaperoneAtStart;
-        Vector3 diffLeftHandChaperoneLerp = diffLeftHandChaperone * deltaTime;
+        this.savedHdmWorldPos = this.gameObjHmd.transform.position;
 
         // végül módosítom a chaperone rotációját, és pozícióját
         this.transform.rotation *= quatTmp2;
         //this.transform.position += diffRotHmdChaperone;
+
+        // kiszámolom az új rotációval a chp-ben a hmd helyzetét és eltolom a chp-t úgy, hogy a hmd 1 helyben kell maradjon
+        //Vector3 newHdmWorldPos = this.transform.position + this.transform.rotation * this.gameObjHmd.transform.localPosition;
+        Vector3 newHdmWorldPos = this.gameObjHmd.transform.position;
+        this.transform.position -= ( newHdmWorldPos - savedHdmWorldPos );
+
+        // transzláció kezelés
+        // először kiszámolom a chaperone-hoz viszonyított transzlációt, minusz a default érték
+        Vector3 diffLeftHandChaperone = this.gameObjLeftHand.transform.localPosition - this.posLeftHandRelativeToChaperoneAtStart;
+        Vector3 diffLeftHandChaperoneLerp = diffLeftHandChaperone * deltaTime;
 
         Vector3 vecAdd = this.transform.rotation * diffLeftHandChaperoneLerp;
         this.transform.position += vecAdd;
@@ -88,6 +95,7 @@ public class ScriptMoveChaperone : MonoBehaviour
     private int indexFormat = 0;
     private string strFormat;
     private object[] objsFormat = new object[100];
+
     private void addObj( string msg,object objVal )
     {
         this.strFormat += string.Format( msg,this.indexFormat );
@@ -97,7 +105,7 @@ public class ScriptMoveChaperone : MonoBehaviour
     private void addVector3( string msg,Vector3 vec )
     {
         this.strFormat += string.Format( msg,this.indexFormat,this.indexFormat+1,this.indexFormat+2 );
-        Debug.Log( this.strFormat );
+        //Debug.Log( this.strFormat );
         this.objsFormat[this.indexFormat] = vec.x;
         this.objsFormat[this.indexFormat+1] = vec.y;
         this.objsFormat[this.indexFormat+2] = vec.z;
