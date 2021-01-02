@@ -15,7 +15,8 @@ public class ScriptMoveChaperone : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.posLeftHandRelativeToChaperoneAtStart = MyInverseTransformPoint( this.transform,this.gameObjLeftHand.transform.position );
+        //this.posLeftHandRelativeToChaperoneAtStart = MyInverseTransformPoint( this.transform,this.gameObjLeftHand.transform.position );
+        this.posLeftHandRelativeToChaperoneAtStart = this.gameObjLeftHand.transform.localPosition;
         this.quatLeftHandRelativeToChaperoneAtStart =  Quaternion.Inverse( this.transform.rotation ) * this.gameObjLeftHand.transform.rotation;
     }
 
@@ -31,7 +32,8 @@ public class ScriptMoveChaperone : MonoBehaviour
         float deltaTime = Time.deltaTime;
 
         // először kiszámolom a chaperone-hoz relatív position-t és rotation-t
-        Vector3 currentRelativePosDiffLeftHandChaperone = MyInverseTransformPoint( this.transform,this.gameObjLeftHand.transform.position );
+        //Vector3 currentRelativePosDiffLeftHandChaperone = MyInverseTransformPoint( this.transform,this.gameObjLeftHand.transform.position );
+        Vector3 currentRelativePosDiffLeftHandChaperone = this.gameObjLeftHand.transform.localPosition;
         Quaternion currentRelativeQuatDiffLeftHandChaperone = Quaternion.Inverse( this.transform.rotation ) * this.gameObjLeftHand.transform.rotation;
 
         // először kiszámolom a chaperone-hoz viszonyított rotációt
@@ -56,7 +58,7 @@ public class ScriptMoveChaperone : MonoBehaviour
         this.transform.position += diffRotHmdChaperone;
 
         Vector3 vecAdd = this.transform.rotation * diffLeftHandChaperoneLerp;
-        //this.transform.position += vecAdd;
+        this.transform.position += vecAdd;
     }
 
     private Vector3 MyInverseTransformPoint( Transform transform,Vector3 worldCoordPos )
