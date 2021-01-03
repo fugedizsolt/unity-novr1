@@ -18,3 +18,5 @@
 	- ebből azt tudom kitalálni, hogy
 		- nyilvántartok egy quaternion-t az aktuális forgatásra, amelyet módosítok az aktuális forgatással egy adott sebességgel
 		- nyilvántartok egy vektort az aktuális transzlációra, amelyet módosítok az aktuális transzlációval egy adott sebességgel
+	- InverseTransformPoint fgv ezt számolja : Quaternion.Inverse( transform.rotation ) * ( worldCoordPos - transform.position )
+		- ebben nincs scale
