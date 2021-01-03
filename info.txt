@@ -17,6 +17,7 @@
 		- a transzlációhoz van egy vektor értékem (a rotáció irányában x,y,z tengely mentén), melyet float "sebesség" értékkel módosíthatok
 	- ebből azt tudom kitalálni, hogy
 		- nyilvántartok egy quaternion-t az aktuális forgatásra, amelyet módosítok az aktuális forgatással egy adott sebességgel
+			- a cél az, hogy egy adott szögsebességnél ne tudjunk gyorsabban fordulni
 		- nyilvántartok egy vektort az aktuális transzlációra, amelyet módosítok az aktuális transzlációval egy adott sebességgel
 	- InverseTransformPoint fgv ezt számolja : Quaternion.Inverse( transform.rotation ) * ( worldCoordPos - transform.position )
 		- ebben nincs scale
