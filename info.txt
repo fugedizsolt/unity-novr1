@@ -21,3 +21,4 @@
 		- nyilvántartok egy vektort az aktuális transzlációra, amelyet módosítok az aktuális transzlációval egy adott sebességgel
 	- InverseTransformPoint fgv ezt számolja : Quaternion.Inverse( transform.rotation ) * ( worldCoordPos - transform.position )
 		- ebben nincs scale
+	- gyorsulások szépen számolva, már csak vr-hoz kell adaptálni a konstansokat

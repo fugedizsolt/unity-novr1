@@ -68,7 +68,9 @@ public class ScriptMoveChaperone : MonoBehaviour
         // először kiszámolom a chaperone-hoz viszonyított transzlációt, minusz a default érték
         Vector3 diffLeftHandChaperone = this.gameObjLeftHand.transform.localPosition - this.posLeftHandRelativeToChaperoneAtStart;
         float diffLen = diffLeftHandChaperone.sqrMagnitude;
-        float accLen = Mathf.Pow( diffLen/10f,2f )-1f;
+        if ( diffLen>8 )
+            diffLen = 8;
+        float accLen = Mathf.Pow( 2f,diffLen )-1f;
         this.targetTranslationAcceleration = diffLeftHandChaperone.normalized * accLen;
         Vector3 diffVelocity = this.targetTranslationAcceleration - this.currentTranslationAcceleration;
         Vector3 addVelocity = diffVelocity * deltaTime;
@@ -84,12 +86,12 @@ public class ScriptMoveChaperone : MonoBehaviour
             currentAccelerationVectorLength = targetAccelerationVectorLength;
         }
 
-        if ( currentAccelerationVectorLength>1f )
+        if ( currentAccelerationVectorLength>4f )
         {
-            this.currentTranslationAcceleration = this.currentTranslationAcceleration.normalized * 1f;
+            this.currentTranslationAcceleration = this.currentTranslationAcceleration.normalized * 4f;
         }
-        this.currentTranslationAsVelocity += this.currentTranslationAcceleration * (deltaTime/10f);
-        this.transform.position += this.currentTranslationAsVelocity * (deltaTime/10f);
+        this.currentTranslationAsVelocity += this.currentTranslationAcceleration * (deltaTime/5f);
+        this.transform.position += this.currentTranslationAsVelocity * (2f*deltaTime);
 
         //Vector3 diffLeftHandChaperoneLerp = diffLeftHandChaperone * deltaTime;
         //Vector3 vecAdd = this.transform.rotation * diffLeftHandChaperoneLerp;
