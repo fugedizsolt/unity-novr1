@@ -8,3 +8,13 @@
 	- a local-space <-> world-space konverzió volt a kulcs, de ezt még rohadtul nem értem...
 	- VR-ban valamiért még nem jó a prg
 	- átalakítottam úgy, hogy a chaperone-hoz teszem a script-et és kezdeti quaternion-t is kezelek
+
+20200103:
+	- unity quaternion (nem tudom, ez menniyre jó...):
+		- https://github.com/Unity-Technologies/Unity.Mathematics/blob/master/src/Unity.Mathematics/quaternion.cs
+	- a gyorsulás számolás kicsit eltér
+		- a rotációhoz van egy float "sebesség" értékem, amit "Lerp" fgv-vel mondok meg
+		- a transzlációhoz van egy vektor értékem (a rotáció irányában x,y,z tengely mentén), melyet float "sebesség" értékkel módosíthatok
+	- ebből azt tudom kitalálni, hogy
+		- nyilvántartok egy quaternion-t az aktuális forgatásra, amelyet módosítok az aktuális forgatással egy adott sebességgel
+		- nyilvántartok egy vektort az aktuális transzlációra, amelyet módosítok az aktuális transzlációval egy adott sebességgel
